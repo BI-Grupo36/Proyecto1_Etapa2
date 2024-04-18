@@ -1,0 +1,17 @@
+ydata_profiling
+pandas
+pydantic
+openpyxl
+ipywidgets==8.1.2
+plotly
+scikit-learn
+ipykernel
+imbalanced-learn
+nltk
+keras
+tensorflow
+mlxtend
+langdetect
+fastapi
+uvicorn[standard]
+sqlalchemy
