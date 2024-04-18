@@ -28,6 +28,10 @@ function App() {
     // Finalmente aquí se muestra la calificación de la reseña abajo en una caja aparte y grande la calificación que salió
   };
 
+  const handleFileUpload = () => {
+    // Posteriormente aquí va la conexión con el API para retornar las reseñas del csv 
+  };
+
   return (
     <div className="App d-flex flex-column vh-100">
       <header className="bg-custom p-3">
@@ -35,6 +39,7 @@ function App() {
           <h1>Análisis de recomendaciones turísticas</h1>
         </div>
       </header>
+      <div className="my-3"></div>
       <div className="container text-center flex-grow-1 d-flex justify-content-center align-items-center">
         <div className="w-100">
           <h2>Nueva reseña turística</h2>
@@ -64,6 +69,22 @@ function App() {
               )}
             </div>
           </div>
+        
+          <div className="row">
+            <form>
+              <div className="my-5"></div>
+              <h2>Subir archivo CSV</h2>
+              <input type="file" accept=".csv"/>
+              <button
+                    className="btn btn-warning btn-lg btn-block" 
+                    // Cambiar con API
+                    onClick={handleFileUpload}
+                  >
+                    Cargar
+                  </button>
+            </form>
+          </div>
+
           <div className="my-5"></div>
           <h2>Historial de reseñas</h2>
           <div className="row">
