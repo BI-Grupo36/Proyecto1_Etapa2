@@ -1,0 +1,16 @@
+.input-box {
+    background-color: #ffffff; /* Color Peach Fuzz */
+    border-color: #b3a599; /* Cambia el color del borde al mismo color */
+    color: black; /* Color del texto */
+  }
+  
+.bg-custom {
+    background-color: #beecff; /* Cambia el color de fondo */
+    background-size: cover; /* Ajusta la imagen al tamaño del header */
+    background-position: center; /* Centra la imagen */
+  }
+  
+  .btn-warning {
+    color: black; /* Cambia el color del texto del botón a negro */
+  }
+  
