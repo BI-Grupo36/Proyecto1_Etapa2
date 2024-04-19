@@ -28,9 +28,11 @@ Es necesario instalar virtual env para crear el ambiente virtual:
 pip install virtualenv
 
 ```
+
 Una vez instalado, se crea el ambiente virtual con el nombre de `env`:
 
-````
+
+```
 python -m venv env
 
 ```
