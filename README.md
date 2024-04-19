@@ -60,3 +60,20 @@ La aplicación correrá en el http://127.0.0.1:8000/ y en http://127.0.0.1:8000/
 
 ### Ejecución del Frontend
 
+Requisitos:
+- Node.js
+
+1. Instalar node. Puedes verificar que node se ha instalado usando el siguiente comando:
+   ```node -v```
+2. Instalar los node_modules para poder correr la aplicaciòn:
+   ```npm install```
+3. Ejecutar la aplicación Ejecuta la aplicación usando el siguiente comando:
+   ```npm start```
+   
+La aplicación estará en funcionamiento en http://localhost:3000
+
+Puedes acceder a la aplicación a través de un navegador.
+
+### Nota importante
+
+Para que la aplicación funcione correctamente, debes ejecutar la aplicación del backend, con las instrucciones anteriores.
