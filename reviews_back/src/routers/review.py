@@ -1,6 +1,6 @@
 from msilib.schema import File
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from src.schemas.review import ReviewResponse, ReviewCreate
 import src.services.review as service
@@ -73,7 +73,7 @@ def classify_review(review: ReviewCreate, db: Session = Depends(get_db)) -> Revi
         return existing_review
     return service.create_review(db=db, review=review)
 
-@router.post("/load", response_model=List[ReviewResponse], status_code=201)
+@router.post("/file", response_model=List[ReviewResponse], status_code=201)
 def load_reviews(db: Session = Depends(get_db), file: UploadFile =File(...)) -> str:
     """
     Load multiple reviews into the database.

@@ -2,6 +2,8 @@ import re
 import unicodedata
 from collections import Counter
 import pandas as pd
+import nltk
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -23,7 +25,7 @@ class DataPreprocessor:
         text = text.lower()
         # Encontrar emoticones
         emoticons = re.findall('(?::|;|=)(?:-)?(?:\)|\(|D|P)', text)
-        # Eliminar caracteres no alfanuméricos y agregar emoticones
+        # Eliminar caracteres no alfanuméricos
         text = re.sub('[\W]+', ' ', text) + ' '.join(emoticons).replace('-', '')
         return text.split()
 
