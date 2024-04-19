@@ -6,30 +6,104 @@ function App() {
   const [review, setReview] = useState('');
   const [calificacion, setCalificacion] = useState('');
   const [historialResenas, setHistorialResenas] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Simulando una solicitud a la API para obtener el historial de reseñas
-    fetch('URL_DE_TU_API')
-      .then(response => response.json())
-      .then(data => {
-        // Actualizar el estado con los datos recibidos del API
-        setHistorialResenas(data);
-      })
-      .catch(error => console.error('Error al obtener el historial de reseñas:', error));
-  }, []); // La dependencia vacía asegura que esta solicitud solo se realice una vez al cargar el componente
+    fetchHistorialResenas();
+  }, []);
+
+  const fetchHistorialResenas = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/reviews/');
+      const data = await response.json();
+      setHistorialResenas(data);
+    } catch (error) {
+      console.error('Error al obtener el historial de reseñas:', error);
+    }
+  };
 
   const handleReviewChange = (event) => {
     setReview(event.target.value);
   };
 
-  const handleReviewSubmit = () => {
-    // Posteriormente aquí va la conexión con el API para calcular la calificación
-    console.log('Reseña:', review);
-    // Finalmente aquí se muestra la calificación de la reseña abajo en una caja aparte y grande la calificación que salió
+  const handleReviewSubmit = async () => {
+    try {
+      if (!review) {
+        return;
+      }
+  
+      const response = await fetch('http://localhost:8000/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: review,
+        }),
+      });
+      const data = await response.json();
+  
+      if (response.ok) {
+        if (data.score !== undefined) {
+          setCalificacion(data.score);
+        } else {
+          setCalificacion('No se pudo clasificar');
+        }
+      } else {
+        console.error('Error al clasificar la reseña:', data.error);
+      }
+
+      fetchHistorialResenas();
+    } catch (error) {
+      console.error('Error al clasificar la reseña:', error);
+    }
+  };
+  
+  const handleCSVSubmit = async (event) => {
+    try {
+      const file = event.target.files[0];
+      if (!file) return;
+  
+      const formData = new FormData();
+      formData.append('file', file);
+  
+      setLoading(true);
+      const response = await fetch('http://localhost:8000/reviews/file', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        if (data.reviews && data.reviews.length > 0) {
+          setHistorialResenas(data.reviews);
+        } else {
+          console.log('No se encontraron reseñas en el archivo CSV');
+        }
+      } else {
+        console.error('Error al cargar el archivo CSV:', response.statusText);
+      }
+  
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al cargar el archivo CSV:', error);
+      setLoading(false);
+    }
   };
 
-  const handleFileUpload = () => {
-    // Posteriormente aquí va la conexión con el API para retornar las reseñas del csv 
+  const clearHistorialResenas = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/reviews/', {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setHistorialResenas([]);
+      } else {
+        console.error('Error al limpiar el historial de reseñas:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error al limpiar el historial de reseñas:', error);
+    }
   };
 
   return (
@@ -55,7 +129,7 @@ function App() {
                     rows="5"
                   />
                   <button
-                    className="btn btn-warning btn-lg btn-block" // Cambio de color a amarillo
+                    className="btn btn-warning btn-lg btn-block"
                     onClick={handleReviewSubmit}
                   >
                     Calificar reseña
@@ -69,37 +143,47 @@ function App() {
               )}
             </div>
           </div>
-        
+          <div className="my-5"></div>
+          <h2>Calificar archivo CSV</h2>
           <div className="row">
-            <form>
-              <div className="my-5"></div>
-              <h2>Subir archivo CSV</h2>
-              <input type="file" accept=".csv"/>
-              <button
-                    className="btn btn-warning btn-lg btn-block" 
-                    // Cambiar con API
-                    onClick={handleFileUpload}
-                  >
-                    Cargar
-                  </button>
-            </form>
+            <div className="col-lg-8 mx-auto">
+              <div className="input-group mb-3">
+                <input
+                  type="file"
+                  accept=".csv"
+                  className="form-control"
+                  onChange={handleCSVSubmit}
+                />
+                <button
+                  className="btn btn-warning"
+                  type="button"
+                  onClick={handleCSVSubmit}
+                  disabled={loading}
+                >
+                  {loading ? 'Cargando...' : 'Calificar CSV'}
+                </button>
+              </div>
+            </div>
           </div>
-
           <div className="my-5"></div>
           <h2>Historial de reseñas</h2>
           <div className="row">
             <div className="col-lg-8 mx-auto">
-              {historialResenas.length > 0 ? (
-                <ul className="list-group">
-                  {historialResenas.map((resena, index) => (
-                    <li key={index} className="list-group-item">
-                      {resena.reseña} - Calificación: {resena.calificación}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No hay reseñas disponibles.</p>
-              )}
+              <div>
+                <button
+                  className="btn btn-danger mb-3"
+                  onClick={clearHistorialResenas}
+                >
+                  Limpiar historial de reseñas
+                </button>
+              </div>
+              <ul className="list-group">
+                {historialResenas.map((resena) => (
+                  <li key={resena.id} className="list-group-item">
+                    {resena.text} - Calificación: {resena.score}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
