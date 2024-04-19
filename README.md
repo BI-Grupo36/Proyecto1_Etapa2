@@ -64,11 +64,17 @@ Requisitos:
 - Node.js
 
 1. Instalar node. Puedes verificar que node se ha instalado usando el siguiente comando:
-   ```node -v```
-2. Instalar los node_modules para poder correr la aplicaciòn:
-   ```npm install```
-3. Ejecutar la aplicación Ejecuta la aplicación usando el siguiente comando:
-   ```npm start```
+   ```
+   node -v
+   ```
+3. Instalar los node_modules para poder correr la aplicaciòn:
+   ```
+   npm install
+   ```
+5. Ejecutar la aplicación Ejecuta la aplicación usando el siguiente comando:
+   ```
+   npm start
+   ```
    
 La aplicación estará en funcionamiento en http://localhost:3000
 
