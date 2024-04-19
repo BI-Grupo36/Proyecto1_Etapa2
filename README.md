@@ -16,7 +16,6 @@ Integrantes (Sección 1):
 
 ```
 cd reviews_back
-
 ```
 
 3. Generar un ambiente virtual e instalar las dependencias
@@ -26,7 +25,6 @@ Es necesario instalar virtual env para crear el ambiente virtual:
 
 ```
 pip install virtualenv
-
 ```
 
 Una vez instalado, se crea el ambiente virtual con el nombre de `env`:
@@ -34,7 +32,6 @@ Una vez instalado, se crea el ambiente virtual con el nombre de `env`:
 
 ```
 python -m venv env
-
 ```
 Luego se activa el ambiente virtual:
 
@@ -44,21 +41,18 @@ env\Scripts\activate
 
 # En cmd
 env\Scripts\activate.bac
-
 ```
 
 Finalmente se se instalan las dependencias:
 
 ```
 pip install -r requirements.txt
-
 ```
 
 4. Ejecutar el Backend
 
 ```
-uvicorn src.main:app --reload   
-
+uvicorn src.main:app --reload
 ```
 
 La aplicación correrá en el http://127.0.0.1:8000/ y en http://127.0.0.1:8000/docs se puede revisar la documentación del API.
