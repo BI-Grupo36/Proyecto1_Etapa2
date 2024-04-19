@@ -73,7 +73,7 @@ def classify_review(review: ReviewCreate, db: Session = Depends(get_db)) -> Revi
         return existing_review
     return service.create_review(db=db, review=review)
 
-@router.post("/file", response_model=List[ReviewResponse], status_code=201)
+@router.post("/file", status_code=201)
 def load_reviews(db: Session = Depends(get_db), file: UploadFile =File(...)) -> str:
     """
     Load multiple reviews into the database.
@@ -86,7 +86,6 @@ def load_reviews(db: Session = Depends(get_db), file: UploadFile =File(...)) -> 
     """
     if file.content_type != "text/csv":
         raise HTTPException(status_code=400, detail="Only CSV files are allowed.")
-    
     response = service.read_reviews_from_csv(db=db,file=file)
     if not response[0]:
         raise HTTPException(status_code=400, detail="No reviews found in the CSV file.")
@@ -101,4 +100,12 @@ def delete_review(id: str, db: Session = Depends(get_db)):
         id (str): The ID of the review to delete.
     """
     service.delete_review(db, id)
+    return None
+
+@router.delete("/", status_code=204)
+def delete_all_reviews(db: Session = Depends(get_db)):
+    """
+    Delete all reviews from the database.
+    """
+    service.delete_all_reviews(db)
     return None

@@ -25,10 +25,10 @@ def get_review_by_text(db: Session, text: str) -> ReviewModel:
     )
 
 
-def get_reviews_by_category(db: Session, category: int) -> List[ReviewModel]:
+def get_reviews_by_score(db: Session, score: int) -> List[ReviewModel]:
     return (
         db.query(ReviewModel)
-        .filter(ReviewModel.category == category)
+        .filter(ReviewModel.score == score)
         .all()
     )
 
@@ -39,21 +39,17 @@ def get_reviews(db: Session) -> List[ReviewModel]:
 
 
 def create_review(db: Session, review: ReviewCreate) -> ReviewModel:
-    predicted_category, preprocessed_text = classify_text(review.text)
+    predicted_score = classify_review(review.text)
     db_review = ReviewModel(
         id=str(uuid4()),
         text=review.text,
-        category=predicted_category,
-        preprocessed_text=preprocessed_text
+        score=predicted_score,
     )
     db.add(db_review)
     db.commit()
     db.refresh(db_review)
     return db_review
 
-
-def classify_text(text: str) -> int:
-    return classify_review(text)
 
 
 def read_reviews_from_csv(db: Session, file: UploadFile) -> (bool, str): # type: ignore
@@ -71,9 +67,7 @@ def read_reviews_from_csv(db: Session, file: UploadFile) -> (bool, str): # type:
 
     if df.empty:
         return (True, "All reviews already exist in the database")
-
     answ_df = classify_reviews(df)
-
     reviews = []
     for _, row in answ_df.iterrows():
         db_review = ReviewModel(
@@ -93,4 +87,8 @@ def read_reviews_from_csv(db: Session, file: UploadFile) -> (bool, str): # type:
 def delete_review(db: Session, id: str) -> None:
     db_review = get_review(db, id)
     db.delete(db_review)
+    db.commit()
+
+def delete_all_reviews(db: Session) -> None:
+    db.query(ReviewModel).delete()
     db.commit()

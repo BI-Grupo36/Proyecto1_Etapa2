@@ -54,16 +54,19 @@ class ReviewClassifier:
         self.preprocessor = DataPreprocessor()
         self.vectorizer = load('Vectorizer.pkl')
 
+
     def predict(self, review):
         processed_review = self.preprocessor.preprocess(review)
         vectorized_review = self.vectorizer.transform([processed_review])
+        lets_see = self.pipeline.predict(vectorized_review)
         return self.pipeline.predict(vectorized_review)
 
 classifier = ReviewClassifier()
 
 def classify_review(text):
     prediction = classifier.predict(text)
-    return prediction
+    # The prediction is an array of strings, we change each element to an integer
+    return int(prediction[0])
 
 def classify_reviews(texts_df: pd.DataFrame) -> pd.DataFrame:
     num_columns = texts_df.shape[1]
@@ -72,6 +75,5 @@ def classify_reviews(texts_df: pd.DataFrame) -> pd.DataFrame:
         texts_df['Score'] = texts_df['Review'].apply(classify_review)
     else:
         raise Exception('Invalid number of columns in the DataFrame. Only one column is allowed.')
-    
 
     return texts_df

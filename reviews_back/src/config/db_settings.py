@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 #settings = Settings()
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./texts.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./reviews.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, 

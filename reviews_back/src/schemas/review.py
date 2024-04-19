@@ -32,7 +32,6 @@ class ReviewLog(ReviewCreate):
         }
     }
 
-
 class ReviewResponse(ReviewCreate):
     id: str
     score: int
