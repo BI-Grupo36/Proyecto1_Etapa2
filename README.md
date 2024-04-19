@@ -49,7 +49,7 @@ env\Scripts\activate.bac
 
 Finalmente se se instalan las dependencias:
 
-````
+```
 pip install -r requirements.txt
 
 ```
