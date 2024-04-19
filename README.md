@@ -54,7 +54,7 @@ pip install -r requirements.txt
 
 ```
 
-3. Ejecutar el Backend
+4. Ejecutar el Backend
 
 ```
 uvicorn src.main:app --reload   
