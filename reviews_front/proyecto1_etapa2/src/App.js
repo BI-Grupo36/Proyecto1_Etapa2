@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
-import { Link } from 'react-router-dom';	
-
-
+import { Link } from 'react-router-dom';
 
 function App() {
   const [review, setReview] = useState('');
@@ -79,6 +77,7 @@ function App() {
       if (response.ok) {
         const data = await response.json();
         if (data.reviews && data.reviews.length > 0) {
+          // Actualizar el estado de las reseñas con las nuevas reseñas y calificaciones
           setHistorialResenas(data.reviews);
         } else {
           console.log('No se encontraron reseñas en el archivo CSV');
@@ -88,11 +87,12 @@ function App() {
       }
   
       setLoading(false);
+      fetchHistorialResenas();
     } catch (error) {
       console.error('Error al cargar el archivo CSV:', error);
       setLoading(false);
     }
-  };
+  };  
 
   const clearHistorialResenas = async () => {
     try {
@@ -114,13 +114,10 @@ function App() {
       <header className="bg-custom p-3">
         <div className="container">
           <h1>Análisis de recomendaciones turísticas</h1>
-        </div>
-        <div className="container">
           <Link to="/model" className="btn btn-warning">Ver Modelo Seleccionado</Link>
         </div>
       </header>
       <div className="my-3"></div>
-      
       <div className="container text-center flex-grow-1 d-flex justify-content-center align-items-center">
         <div className="w-100">
           <h2>Nueva reseña turística</h2>
@@ -155,20 +152,21 @@ function App() {
           <div className="row">
             <div className="col-lg-8 mx-auto">
               <div className="input-group mb-3">
-                <input
-                  type="file"
-                  accept=".csv"
-                  className="form-control"
-                  onChange={handleCSVSubmit}
-                />
-                <button
-                  className="btn btn-warning"
-                  type="button"
-                  onClick={handleCSVSubmit}
-                  disabled={loading}
-                >
-                  {loading ? 'Cargando...' : 'Calificar CSV'}
-                </button>
+              <input
+                type="file"
+                accept=".csv"
+                className="form-control"
+                onChange={handleCSVSubmit}
+              />
+
+              <button
+                className="btn btn-warning"
+                type="button"
+                onClick={handleCSVSubmit}
+                disabled={loading}
+              >
+                {loading ? 'Cargando...' : 'Calificar CSV'}
+              </button>
               </div>
             </div>
           </div>
