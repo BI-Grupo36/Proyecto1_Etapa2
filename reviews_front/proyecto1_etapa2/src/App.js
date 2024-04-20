@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
+import { Link } from 'react-router-dom';	
+
+
 
 function App() {
   const [review, setReview] = useState('');
@@ -112,8 +115,12 @@ function App() {
         <div className="container">
           <h1>Análisis de recomendaciones turísticas</h1>
         </div>
+        <div className="container">
+          <Link to="/model" className="btn btn-warning">Ver Modelo Seleccionado</Link>
+        </div>
       </header>
       <div className="my-3"></div>
+      
       <div className="container text-center flex-grow-1 d-flex justify-content-center align-items-center">
         <div className="w-100">
           <h2>Nueva reseña turística</h2>
@@ -138,7 +145,7 @@ function App() {
               </div>
               {calificacion && (
                 <div className="mt-3">
-                  <p>Calificación: {calificacion}</p>
+                  <h3>Calificación: {calificacion}</h3>
                 </div>
               )}
             </div>
